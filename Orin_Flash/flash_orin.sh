@@ -38,6 +38,10 @@ function help() {
     echo "    jetson-orin-nano-devkit-nvme"
     echo "    jetson-orin-nano-seeed-j3010"
     echo "    jetson-orin-nx-seeed-j4012"
+    echo "    nexcom-atc3750-6c-agx-orin-32gb"
+    echo "    nexcom-atc3750-6c-agx-orin-64gb"
+    echo "    nexcom-atc3750-8m-agx-orin-32gb"
+    echo "    nexcom-atc3750-8m-agx-orin-64gb"
 }
 
 # Parse arguments
@@ -91,6 +95,18 @@ elif [[ $balena_device_name = "jetson-orin-nx-xavier-nx-devkit" ]] || [[ $balena
 elif [[ $balena_device_name = "jetson-agx-orin-devkit-64gb" ]]; then
 	device_type="jetson-agx-orin-devkit"
 	device_dtb="tegra234-p3737-0000+p3701-0005.dtb"
+elif [[ $balena_device_name = "nexcom-atc3750-6c-agx-orin-32gb" ]]; then
+	device_type="jetson-agx-orin-devkit"
+	device_dtb="tegra234-atc3750-6C+p3701-0004-orin.dtb"
+elif [[ $balena_device_name = "nexcom-atc3750-6c-agx-orin-64gb" ]]; then
+	device_type="jetson-agx-orin-devkit"
+	device_dtb="tegra234-atc3750-6C+p3701-0005-orin.dtb"
+elif [[ $balena_device_name = "nexcom-atc3750-8m-agx-orin-32gb" ]]; then
+	device_type="jetson-agx-orin-devkit"
+	device_dtb="tegra234-p3701-0004-atc3750-8M-base_ver.dtb"
+elif [[ $balena_device_name = "nexcom-atc3750-8m-agx-orin-64gb" ]]; then
+	device_type="jetson-agx-orin-devkit"
+	device_dtb="tegra234-p3701-0005-atc3750-8M-base_ver.dtb"
 else
 	log ERROR "Unknown or unspecified device-type!"
 fi
@@ -132,6 +148,18 @@ trap cleanup EXIT SIGHUP SIGINT SIGTERM
 # Unpack BSP archive if the Linux_for_Tegra has been removed
 if [ ! -d ${work_dir}/${device_dir}/${lt_dir} ]; then
     tar xf *.tbz2
+fi
+
+# Copy ATC3750-specific DTBs from assets if needed
+if [[ $balena_device_name == nexcom-atc3750* ]]; then
+    dtb_asset_path="${work_dir}/assets/${balena_device_name}-assets/${device_dtb}"
+    if [ -f "$dtb_asset_path" ]; then
+        mkdir -p "${device_dir}${lt_dir}/kernel/dtb"
+        cp "$dtb_asset_path" "${device_dir}${lt_dir}/kernel/dtb/"
+        log "Copied ATC3750-specific DTB from assets: ${device_dtb}"
+    else
+        log ERROR "ATC3750 DTB not found in assets: $dtb_asset_path"
+    fi
 fi
 
 cat "${work_dir}/${device_dir}/${lt_dir}/Tegra_Software_License_Agreement-Tegra-Linux.txt"
