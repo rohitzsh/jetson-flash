@@ -96,16 +96,16 @@ elif [[ $balena_device_name = "jetson-agx-orin-devkit-64gb" ]]; then
 	device_type="jetson-agx-orin-devkit"
 	device_dtb="tegra234-p3737-0000+p3701-0005.dtb"
 elif [[ $balena_device_name = "nexcom-atc3750-6c-agx-orin-32gb" ]]; then
-	device_type="jetson-agx-orin-devkit"
+	device_type="atc3750-6C-orin"
 	device_dtb="tegra234-atc3750-6C+p3701-0004-orin.dtb"
 elif [[ $balena_device_name = "nexcom-atc3750-6c-agx-orin-64gb" ]]; then
-	device_type="jetson-agx-orin-devkit"
+	device_type="atc3750-6C-orin"
 	device_dtb="tegra234-atc3750-6C+p3701-0005-orin.dtb"
 elif [[ $balena_device_name = "nexcom-atc3750-8m-agx-orin-32gb" ]]; then
-	device_type="jetson-agx-orin-devkit"
+	device_type="atc3750-8M-orin"
 	device_dtb="tegra234-p3701-0004-atc3750-8M-base_ver.dtb"
 elif [[ $balena_device_name = "nexcom-atc3750-8m-agx-orin-64gb" ]]; then
-	device_type="jetson-agx-orin-devkit"
+	device_type="atc3750-8M-orin"
 	device_dtb="tegra234-p3701-0005-atc3750-8M-base_ver.dtb"
 else
 	log ERROR "Unknown or unspecified device-type!"
